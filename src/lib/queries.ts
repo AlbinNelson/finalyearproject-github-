@@ -888,7 +888,7 @@ export const getFunnelPageCode = async (funnelPageId: string) => {
   console.log(htmlOutput);
 
   
-  return htmlOutput
+  return htmlOutput;
 }
 
 //code 1
