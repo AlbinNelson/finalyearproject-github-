@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Main "W" shape formed from building blocks -->
+  <path d="
+    M30 40 
+    L70 40 
+    L90 140 
+    L110 60
+    L130 140
+    L150 40
+    L190 40
+    L155 180
+    L125 80
+    L100 180
+    L65 180
+    L30 40
+    Z" 
+    fill="#3B82F6"
+  />
+  
+  <!-- Smaller block suggesting building/stacking -->
+  <rect x="85" y="20" width="30" height="30" rx="4" fill="#2563EB"/>
+</svg>
