@@ -5,7 +5,7 @@ import FunnelEditorSidebar from './_components/funnel-editor-sidebar'
 import EditorProvider from '@/providers/editor/editor-provider'
 import FunnelEditor from './_components/funnel-editor'
 import FunnelEditorNavigation from './_components/funnel-editor-navigation'
-import Code from '@/app/(main)/subaccount/[subaccountId]/funnels/[funnelId]/editor/code/code'
+import Code from '@/app/(main)/subaccount/[subaccountId]/funnels/[funnelId]/editor/code/[funnelPageId]/page'
 
 type Props = {
   params: {
@@ -38,6 +38,7 @@ const Page = async ({ params }: Props) => {
           funnelId={params.funnelId}
           funnelPageDetails={funnelPageDetails}
           subaccountId={params.subaccountId}
+          funnelPageId={params.funnelPageId}
         />
         <div className="h-full flex justify-center ">
           <FunnelEditor funnelPageId={params.funnelPageId}/>

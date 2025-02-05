@@ -32,12 +32,14 @@ type Props = {
   funnelId: string
   funnelPageDetails: FunnelPage
   subaccountId: string
+  funnelPageId:string
 }
 
 const FunnelEditorNavigation = ({
   funnelId,
   funnelPageDetails,
   subaccountId,
+  funnelPageId,
 }: Props) => {
   const router = useRouter()
   const { state, dispatch } = useEditor()
@@ -200,7 +202,7 @@ const FunnelEditorNavigation = ({
                   <div 
                       onClick={async () => {
                         console.log('Clickids')
-                        router.push(`/subaccount/${subaccountId}/funnels/${funnelId}/editor/code`);
+                        router.push(`/subaccount/${subaccountId}/funnels/${funnelId}/editor/code/${funnelPageId}`);
                       }}>
                   <TabsTrigger
                     value="Code"

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
 
-  // Define condition for paths where padding should be removed
+  // Define condition for paths where padding should be removed for the sidebarr
   const shouldRemovePadding = pathname.includes('/funnels/') && pathname.includes('/editor/')
 
   return (
