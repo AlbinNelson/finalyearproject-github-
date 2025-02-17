@@ -20,7 +20,7 @@ const Sidebar = async({id,type}: Props) => {
                     :user?.Agency.SubAccount.find((subaccount)=> subaccount.id === id)
     const isWhiteLabeledAgency = user.Agency.whiteLabel
     if(!details) return
-    let sideBarLogo= user.Agency.agencyLogo || "/assets/webbuild-logo.svg";
+    let sideBarLogo= user.Agency.agencyLogo || "/assets/plura-logo.svg";
     if(!isWhiteLabeledAgency){
         if(type==='subaccount'){
             sideBarLogo==user?.Agency.SubAccount.find(

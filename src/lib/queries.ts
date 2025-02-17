@@ -1000,3 +1000,66 @@ class JsonToHtmlConverter {
     return jsonData.map(element => this.processElement(element, 1)).join('');
   }
 }
+
+//claude
+export const upsertContact = async (
+  contact: Omit<Prisma.ContactUncheckedCreateInput, 'id'> & { id?: string }
+) => {
+  const response = await db.contact.upsert({
+    where: { 
+      id: contact.id || v4() 
+    },
+    update: {
+      name: contact.name,
+      email: contact.email,
+      subAccountId: contact.subaccountId // Changed from subaccountId to subAccountId
+    },
+    create: {
+      name: contact.name,
+      email: contact.email,
+      Subaccount: {
+        connect: {
+          id: contact.subaccountId // The connect id can stay as is since it's just a reference
+        }
+      }
+    }
+  });
+
+  return response;
+};
+
+
+export const getSubAccountWithContacts = async (subAccountId: string) => {
+  const response = await db.subAccount.findUnique({
+    where: {
+      id: subAccountId,
+    },
+    include: {
+      Contact: {
+        include: {
+          Ticket: {
+            select: {
+              value: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+    },
+  });
+
+  return response;
+};
+
+
+
+
+
+
+
+
+
+
+
