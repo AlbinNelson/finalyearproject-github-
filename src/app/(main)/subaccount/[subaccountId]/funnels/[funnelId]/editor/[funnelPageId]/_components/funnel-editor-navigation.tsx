@@ -1,4 +1,5 @@
 'use client'
+import Loading from '@/components/global/loading'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
@@ -18,6 +19,7 @@ import {
   Code,
   EyeIcon,
   Laptop,
+  LoaderIcon,
   Redo2,
   Smartphone,
   Tablet,
@@ -25,7 +27,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { FocusEventHandler, useEffect } from 'react'
+import React, { FocusEventHandler, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -41,6 +43,7 @@ const FunnelEditorNavigation = ({
   subaccountId,
   funnelPageId,
 }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
   const { state, dispatch } = useEditor()
 
@@ -92,6 +95,7 @@ const FunnelEditorNavigation = ({
   }
 
   const handleOnSave = async () => {
+    setIsLoading(true);
     const content = JSON.stringify(state.editor.elements)
     try {
       const response = await upsertFunnelPage(
@@ -114,6 +118,9 @@ const FunnelEditorNavigation = ({
       toast('Oppse!', {
         description: 'Could not save editor',
       })
+    }
+    finally {
+      setIsLoading(false); // Hide loading screen after completion
     }
     //print previewMode
     console.log(state.editor.previewMode)
@@ -250,19 +257,19 @@ const FunnelEditorNavigation = ({
             <Redo2 />
           </Button>
           <div className="flex flex-col item-center mr-4">
-            <div className="flex flex-row items-center gap-4">
+            {/*<div className="flex flex-row items-center gap-4">
               Draft
               <Switch
                 disabled
                 defaultChecked={true}
               />
               Publish
-            </div>
+            </div>*/}
             <span className="text-muted-foreground text-sm">
               Last updated {funnelPageDetails.updatedAt.toLocaleDateString()}
             </span>
           </div>
-          <Button onClick={handleOnSave}>Save</Button>
+          {!isLoading?<Button onClick={handleOnSave}>Save</Button>:<Loading/>}
         </aside>
       </nav>
     </TooltipProvider>

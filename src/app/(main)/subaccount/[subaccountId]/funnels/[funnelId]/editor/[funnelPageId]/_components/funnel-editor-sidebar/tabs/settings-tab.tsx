@@ -82,6 +82,32 @@ const SettingsTab = (props: Props) => {
       },
     })
   }
+  //Made for yt video
+  const handleChangeCustomValuesVideo = (e: any) => {
+    const settingProperty = e.target.id
+    let value = e.target.value
+    const match = value.match(/(?:youtube\.com\/(?:.*v=|.*\/|.*embed\/)|youtu\.be\/)([\w-]+)/);
+    const videoId = match ? match[1] : null;
+    if (videoId) {
+      value = `https://www.youtube.com/embed/${videoId}`;
+    }
+    const styleObject = {
+      [settingProperty]: value,
+    }
+
+    dispatch({
+      type: 'UPDATE_ELEMENT',
+      payload: {
+        elementDetails: {
+          ...state.editor.selectedElement,
+          content: {
+            ...state.editor.selectedElement.content,
+            ...styleObject,
+          },
+        },
+      },
+    })
+  }
 
   return (
     <Accordion
@@ -104,6 +130,20 @@ const SettingsTab = (props: Props) => {
                   placeholder="https:domain.example.com/pathname"
                   onChange={handleChangeCustomValues}
                   value={state.editor.selectedElement.content.href}
+                />
+              </div>
+            )}
+            {state.editor.selectedElement.type === 'video' &&
+            !Array.isArray(state.editor.selectedElement.content) && (
+              <div className="flex flex-col gap-2">
+                <p className="text-muted-foreground">Change video Link</p>
+                {/*id,...content."key to change value" has to change if more elements are going to be added */}
+                <Input
+                  id="src"
+                  placeholder="httphttps://youtu.be/"
+                  onChange={handleChangeCustomValuesVideo}
+                  value={state.editor.selectedElement.content.src}
+                  maxLength={50}
                 />
               </div>
             )}

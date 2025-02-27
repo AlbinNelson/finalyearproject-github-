@@ -161,6 +161,29 @@ const Container = ({ element }: Props) => {
           },
         })
         break
+        case 'image':
+      const imageUrl = prompt('Enter Image URL:');
+      if (!imageUrl) return; // If user cancels, do nothing
+
+      dispatch({
+        type: 'ADD_ELEMENT',
+        payload: {
+          containerId: id,
+          elementDetails: {
+            id: `image-${Date.now()}`,
+            name: 'Image',
+            type: 'image',
+            content: { src: imageUrl },
+            styles: {
+              width: '300px',
+              height: '200px',
+              objectFit: 'cover',
+              borderRadius: '8px',
+            },
+          },
+        },
+      });
+      break;
     }
   }
 

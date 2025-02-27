@@ -11,6 +11,8 @@ import LinkPlaceholder from './link-placeholder'
 import TextPlaceholder from './text-placeholder'
 import TwoColumnsPlaceholder from './two-columns-placeholder'
 import VideoPlaceholder from './video-placeholder'
+import { ImageIcon, ImagePlayIcon } from 'lucide-react'
+import ImagePlaceholder from './image-placeholder'
   //import ContactFormComponentPlaceholder from './contact-form-placeholder'
   //import CheckoutPlaceholder from './checkout-placeholder'
   
@@ -63,6 +65,12 @@ import VideoPlaceholder from './video-placeholder'
         Component: <LinkPlaceholder />,
         label: 'Link',
         id: 'link',
+        group: 'elements',
+      },
+      {
+        Component: <ImagePlaceholder />,
+        label: 'image',
+        id: 'image',
         group: 'elements',
       },
     ]

@@ -823,7 +823,7 @@ export const upsertFunnelPage = async (
   if (!subaccountId || !funnelId) return
   const response = await db.funnelPage.upsert({
     where: { id: funnelPage.id || '' },
-    update: { ...funnelPage },
+    update: { ...funnelPage, updatedAt: new Date(), },
     create: {
       ...funnelPage,
       content: funnelPage.content
@@ -990,7 +990,10 @@ class JsonToHtmlConverter {
         const bodyHtml = bodyContent?.map(child => this.processElement(child, indentLevel + 1)).join('') || '';
         return `<body style="${styleString}">\n${bodyHtml}</body>\n`;
       }
-
+      case 'image': {
+        const imageSrc = (content as ElementContent)?.src || '';
+        return `${indent}<img src="${imageSrc}" style="${styleString}" frameborder="0" allowfullscreen></img>\n`;
+      }
       default:
         return `${indent}<div style="${styleString}">${JSON.stringify(content)}</div>\n`;
     }
@@ -1000,6 +1003,201 @@ class JsonToHtmlConverter {
     return jsonData.map(element => this.processElement(element, 1)).join('');
   }
 }
+
+
+
+
+
+
+
+//CODE TO JSON
+{/*
+interface ElementContent {
+  innerText?: string;
+  src?: string;
+  href?: string;
+}
+
+
+interface JsonElement {
+  id?: string;
+  name?: string;
+  type: string;
+  styles?: StyleObject;
+  content?: ElementContent | JsonElement[] | any;
+}
+
+class HtmlToJsonConverter {
+  private counter = 0;
+
+  private kebabToCamelCase(str: string): string {
+    return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+  }
+
+  private parseStyles(styleString: string): StyleObject {
+    if (!styleString) return {};
+    
+    const styles: StyleObject = {};
+    const styleArray = styleString.split(';').filter(style => style.trim());
+    
+    for (const style of styleArray) {
+      const [property, value] = style.split(':').map(s => s.trim());
+      if (property && value) {
+        const camelProperty = this.kebabToCamelCase(property);
+        styles[camelProperty] = value;
+      }
+    }
+    
+    return styles;
+  }
+
+  private generateId(prefix: string): string {
+    this.counter++;
+    return `${prefix}-${this.counter}`;
+  }
+
+  private getElementType(element: Element): string {
+    const tagName = element.tagName.toLowerCase();
+    switch (tagName) {
+      case 'p':
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+      case 'span':
+        return 'text';
+      case 'a':
+        return 'link';
+      case 'img':
+        return 'image';
+      case 'iframe':
+        return 'video';
+      case 'div':
+        if (element.classList.contains('two-column')) {
+          return '2Col';
+        }
+        return 'container';
+      case 'body':
+        return '__body';
+      default:
+        return 'container';
+    }
+  }
+
+  private getElementName(type: string): string {
+    switch (type) {
+      case 'text':
+        return 'Text';
+      case 'link':
+        return 'Link';
+      case 'image':
+        return 'Image';
+      case 'video':
+        return 'YouTube Video';
+      case '2Col':
+        return 'Two Columns';
+      case 'container':
+        return 'Container';
+      case '__body':
+        return 'Body';
+      default:
+        return 'Container';
+    }
+  }
+
+  private processElement(element: Element): JsonElement {
+    const type = this.getElementType(element);
+    const name = this.getElementName(type);
+    const styles = this.parseStyles(element.getAttribute('style') || '');
+    
+    let content: ElementContent | JsonElement[] | undefined;
+    
+    switch (type) {
+      case 'text':
+        content = { innerText: element.textContent?.trim() || '' };
+        break;
+      
+      case 'link':
+        content = {
+          innerText: element.textContent?.trim() || '',
+          href: (element as HTMLAnchorElement).getAttribute('href') || '#'
+        };
+        break;
+      
+      case 'image':
+        content = {
+          src: (element as HTMLImageElement).getAttribute('src') || ''
+        };
+        break;
+      
+      case 'video':
+        content = {
+          src: (element as HTMLIFrameElement).getAttribute('src') || ''
+        };
+        break;
+      
+      default:
+        const children = Array.from(element.children);
+        if (children.length > 0) {
+          content = children.map(child => this.processElement(child));
+        }
+    }
+
+    return {
+      id: element.id || this.generateId(type),
+      name,
+      type,
+      styles,
+      content
+    };
+  }
+
+  convert(htmlString: string): string {
+    try {
+      const parser = new DOMParser();
+      const root = parser.parseFromString(htmlString, 'text/html');
+      const body = root.body;
+
+      const jsonStructure = this.processElement(body);
+      
+      return JSON.stringify([jsonStructure]);
+    } catch (error) {
+      console.error('Error converting HTML to JSON:', error);
+      return JSON.stringify([{
+        id: '__body',
+        name: 'Body',
+        type: '__body',
+        styles: {},
+        content: []
+      }]);
+    }
+  }
+}
+
+export default HtmlToJsonConverter;
+
+const converter = new HtmlToJsonConverter();
+const htmlExample = `
+<body style="background-color: white;">
+  <div style="text-align: center; width: 100%;">
+    <p style="font-size: 64px; color: white; font-weight: bold;">Your Business Name</p>
+  </div>
+  <div class="two-column" style="display: flex;">
+    <p style="font-size: 32px; color: black;">A Short Description of Your Business</p>
+    <a href="#" style="color: white; background-color: blue; border-radius: 10px; padding: 10px 20px;">Get in Touch</a>
+  </div>
+</body>
+`;
+
+const jsonOutput = converter.convert(htmlExample);
+console.log(jsonOutput);
+*/}
+
+
+
+
 
 //claude
 export const upsertContact = async (

@@ -12,6 +12,7 @@ export type EditorElement = {
   name: string
   type: EditorBtns
   content: EditorElement[] | { href?: string; innerText?: string; src?: string }
+  src?:string
 }
 
 export type Editor = {
@@ -70,7 +71,7 @@ const addAnElement = (
   editorArray: EditorElement[],
   action: EditorAction
 ): EditorElement[] => {
-  if (action.type !== 'ADD_ELEMENT')
+  if (action.type !== 'ADD_ELEMENT' && action.type !== 'ADD_IMAGE')
     throw Error(
       'You sent the wrong action type to the Add Element editor State'
     )

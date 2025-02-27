@@ -262,7 +262,7 @@ const TicketForm = ({laneId,subaccountId,getNewTicket}: Props) => {
                         className="h-9"
                         value={search}
                         onChangeCapture={async (value) => {
-                          //@ts-ignore
+                          {/*//@ts-ignore
                           setSearch(value.target.value)
                           if (saveTimerRef.current)
                             clearTimeout(saveTimerRef.current)
@@ -273,12 +273,12 @@ const TicketForm = ({laneId,subaccountId,getNewTicket}: Props) => {
                             )
                             setContactList(response)
                             setSearch('')
-                          }, 1000)
+                          }, 1000)*/}
                         }}
                       />
                       <CommandEmpty>No Customer found.</CommandEmpty>
                       <CommandGroup>
-                        {contactList.map((c) => (
+                        {/*{contactList.map((c) => (
                           <CommandItem
                             key={c.id}
                             value={c.id}
@@ -296,7 +296,7 @@ const TicketForm = ({laneId,subaccountId,getNewTicket}: Props) => {
                               )}
                             />
                           </CommandItem>
-                        ))}
+                        ))}*/}
                       </CommandGroup>
                     </Command>
                   </PopoverContent>

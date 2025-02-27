@@ -8,6 +8,7 @@ import FunnelForm from '@/components/forms/funnel-form'
 
 const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
   const funnels = await getFunnels(params.subaccountId)
+  
   if (!funnels) return null
 
   return (

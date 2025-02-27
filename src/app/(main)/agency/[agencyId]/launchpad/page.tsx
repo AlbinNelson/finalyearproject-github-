@@ -38,7 +38,7 @@ const LaunchPad = async ({params,searchParams}: Props) => {
                 <Card className="border-none">
                     <CardHeader>
                         <CardTitle>
-                            Let's get started
+                            Let us get started
                         </CardTitle>
                         <CardDescription>
                             Follow the steps below to get account set up.

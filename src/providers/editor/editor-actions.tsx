@@ -64,3 +64,11 @@ export type EditorAction =
         funnelPageId: string
       }
     }
+  |
+  {
+    type: 'ADD_IMAGE'
+    payload: {
+      containerId: string
+      elementDetails: EditorElement // Ensure this contains `src`
+    }
+  }

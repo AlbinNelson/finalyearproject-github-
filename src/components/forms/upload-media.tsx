@@ -19,7 +19,7 @@ type Props = {
 
 const formSchema = z.object({
     link:z.string().min(1,{message:"Media file is required"}),
-    name:z.string().min(1,{message:"Name id required"}),
+    name:z.string().min(0,{message:"Name id required"}),
 })
 
 const UploadMediaForm = ({subaccountId}:Props) => {

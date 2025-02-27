@@ -29,6 +29,7 @@ const a = async ({params}:Props) => {
 
 
     return <FunnelEditorNavigation
+    funnelPageId={params.funnelPageId}
     funnelId={params.funnelId}
           funnelPageDetails={funnelPageDetails}
           subaccountId={params.subaccountId}/>

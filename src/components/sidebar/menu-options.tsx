@@ -39,6 +39,7 @@ const MenuOptions= ({
     user,
     defaultOpen,
 }: Props) => {
+    const pathname = usePathname()
     const {setOpen} = useModal()
     const [isMounted, setIsMounted] = useState(false);
 
@@ -50,8 +51,6 @@ const MenuOptions= ({
     useEffect(()=>{setIsMounted(true)},[])
 
     if(!isMounted) return
-
-    const pathname = usePathname()
     const isEditorPage = pathname.includes('/editor/')
     console.log(isEditorPage)
     if (isEditorPage) return <></>
