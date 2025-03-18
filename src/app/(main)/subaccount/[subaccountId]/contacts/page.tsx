@@ -97,5 +97,5 @@ const SubAccountContactPage: React.FC<SubAccountContactPageProps> = async ({
 export default SubAccountContactPage;
 
 export const metadata = constructMetadata({
-  title: "Contacts - Plura",
+  title: "Contacts",
 });

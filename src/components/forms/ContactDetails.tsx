@@ -54,7 +54,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ subaccountId }) => {
       const response = await upsertContact({
         email: values.email,
         name: values.name,
-        subaccountId,
+        subAccountId:subaccountId,
       });
 
       await saveActivityLogsNotification({

@@ -1210,14 +1210,14 @@ export const upsertContact = async (
     update: {
       name: contact.name,
       email: contact.email,
-      subAccountId: contact.subaccountId // Changed from subaccountId to subAccountId
+      subAccountId: contact.subAccountId // Changed from subaccountId to subAccountId
     },
     create: {
       name: contact.name,
       email: contact.email,
       Subaccount: {
         connect: {
-          id: contact.subaccountId // The connect id can stay as is since it's just a reference
+          id: contact.subAccountId // The connect id can stay as is since it's just a reference
         }
       }
     }

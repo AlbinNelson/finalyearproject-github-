@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter,DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -8,10 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 const font = DM_Sans({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "WebBuild",
-  description: "The best website builder available in the market",
-};
+
 
 export default function RootLayout({
   children,

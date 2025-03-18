@@ -1,5 +1,5 @@
 'use client'
-import React, { ChangeEventHandler } from 'react'
+import React, { ChangeEventHandler, useState } from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -35,15 +35,19 @@ import {
 } from '@/components/ui/select'
 import { useEditor } from '@/providers/editor/editor-provider'
 import { Slider } from '@/components/ui/slider'
+import { HexColorPicker } from 'react-colorful'
 
 type Props = {}
 
 const SettingsTab = (props: Props) => {
   const { state, dispatch } = useEditor()
+  const [showColorPickerBack, setShowColorPickerBack] = useState(false);
+  const [showColorPickerText, setShowColorPickerText] = useState(false);
 
   const handleOnChanges = (e: any) => {
     const styleSettings = e.target.id
     let value = e.target.value
+    console.log("Updating:", styleSettings, "with value:", value);
     const styleObject = {
       [styleSettings]: value,
     }
@@ -223,8 +227,8 @@ const SettingsTab = (props: Props) => {
                 <SelectItem value="Press Start 2P">Press Start 2P</SelectItem> {/* Pixelated, retro gaming font  */}
                 <SelectItem value="Lobster">Lobster</SelectItem> {/* Fancy, cursive handwriting  */}
                 <SelectItem value="Anton">Anton</SelectItem> {/* Heavy, bold sans-serif  */}
-                <SelectItem value="Caveat">Caveat</SelectItem> {/* Casual, handwritten style  */}
-                <SelectItem value="Blackletter">Blackletter</SelectItem> {/* Old English, Gothic*/}
+                <SelectItem value="Times New Roman">Times New Roman</SelectItem> {/* Casual, handwritten style  */}
+                <SelectItem value="Thin Italic">Thin Italic</SelectItem> {/* Old English, Gothic*/}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -237,12 +241,47 @@ const SettingsTab = (props: Props) => {
             />
           </div>*/}
           <div className="flex flex-col gap-2">
-            <p className="text-muted-foreground">Color</p>
-            <Input
-              id="color"
-              onChange={handleOnChanges}
-              value={state.editor.selectedElement.styles.color}
-            />
+            <p className="text-muted-foreground">Text Color</p>
+            <div className="flex  border-[1px] rounded-md overflow-clip">
+              <div
+                className="w-12 "
+                style={{
+                  backgroundColor:
+                    state.editor.selectedElement.styles.color ,
+                }}
+                onClick={() => setShowColorPickerText(!showColorPickerText)}
+              />
+              <Input
+                id="color"
+                onChange={handleOnChanges}
+                value={state.editor.selectedElement.styles.color}
+              />
+            </div>
+            {showColorPickerText && (
+              <div className="relative z-10">
+                <div className=" mt-1 ml-1 mr-1 mb-1">
+                  <HexColorPicker
+                    color={state.editor.selectedElement.styles.color || "#000000"}
+                    onChange={(color) => {
+                      handleOnChanges({
+                        target: {
+                          id: "color",
+                          value: color,
+                        },
+                      });
+                    }}
+                  />
+                  <div className="flex justify-end mt-2">
+                    <button
+                      className="px-2 py-1 text-xs bg-primary text-white rounded"
+                      onClick={() => setShowColorPickerText(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex gap-4">
             <div>
@@ -438,7 +477,7 @@ const SettingsTab = (props: Props) => {
                   },
                 })
               }}
-              defaultValue={[
+              value={[
                 typeof state.editor.selectedElement.styles?.opacity === 'number'
                   ? state.editor.selectedElement.styles?.opacity
                   : parseFloat(
@@ -475,7 +514,7 @@ const SettingsTab = (props: Props) => {
                   },
                 })
               }}
-              defaultValue={[
+              value={[
                 typeof state.editor.selectedElement.styles?.borderRadius ===
                 'number'
                   ? state.editor.selectedElement.styles?.borderRadius
@@ -496,17 +535,43 @@ const SettingsTab = (props: Props) => {
                 className="w-12 "
                 style={{
                   backgroundColor:
-                    state.editor.selectedElement.styles.backgroundColor,
+                    state.editor.selectedElement.styles.backgroundColor || "white",
                 }}
+                onClick={() => setShowColorPickerBack(!showColorPickerBack)}
               />
               <Input
-                placeholder="#HFI245"
+                placeholder="#FFFFFF or white"
                 className="!border-y-0 rounded-none !border-r-0 mr-2"
                 id="backgroundColor"
                 onChange={handleOnChanges}
-                value={state.editor.selectedElement.styles.backgroundColor}
+                value={state.editor.selectedElement.styles.backgroundColor ??""}
               />
             </div>
+            {showColorPickerBack && (
+              <div className="relative z-10">
+                <div className=" mt-1 ml-1 mr-1 mb-1">
+                  <HexColorPicker
+                    color={state.editor.selectedElement.styles.backgroundColor || "#ffffff"}
+                    onChange={(color) => {
+                      handleOnChanges({
+                        target: {
+                          id: "backgroundColor",
+                          value: color,
+                        },
+                      });
+                    }}
+                  />
+                  <div className="flex justify-end mt-2">
+                    <button
+                      className="px-2 py-1 text-xs bg-primary text-white rounded"
+                      onClick={() => setShowColorPickerBack(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">Background Image</Label>
@@ -516,14 +581,25 @@ const SettingsTab = (props: Props) => {
                 style={{
                   backgroundImage:
                     state.editor.selectedElement.styles.backgroundImage,
+                  backgroundSize:
+                    "cover",
                 }}
               />
               <Input
-                placeholder="url()"
+                placeholder="Link of an image"
                 className="!border-y-0 rounded-none !border-r-0 mr-2"
                 id="backgroundImage"
-                onChange={handleOnChanges}
-                value={state.editor.selectedElement.styles.backgroundImage}
+                onChange={(e) => {
+                  let urlValue = e.target.value.trim();
+          
+                  // Ensure value is always in url("...")
+                  let formattedValue = urlValue ? `url(${urlValue})` : "";
+          
+                  handleOnChanges({
+                    target: { id: "backgroundImage", value: formattedValue },
+                  });
+                }}
+                value={state.editor.selectedElement.styles.backgroundImage?.replace(/url\(["']?|["']?\)/g, "") || ""}
               />
             </div>
           </div>
